@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { getVersesByPage, type Verse } from '../lib/versesApi'
 import { loadLastPage, saveLastPage } from '../lib/chaptersStore'
 import { recordActivity } from '../lib/habits'
+import { getAllChapters, type Chapter } from '../lib/chaptersApi'
 
 export function QuranReader() {
   const [page, setPage] = useState(() => loadLastPage())
   const [verses, setVerses] = useState<Verse[]>([])
+  const [chapters, setChapters] = useState<Chapter[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     recordActivity()
+    getAllChapters().then(setChapters).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -39,6 +42,12 @@ export function QuranReader() {
       setPage(target)
     }
   }
+
+  const currentPageSurah = useMemo(() => {
+    if (!verses.length || !chapters.length) return null
+    const firstVerseChapterId = parseInt(verses[0].verseKey.split(':')[0])
+    return chapters.find((c) => c.id === firstVerseChapterId)
+  }, [verses, chapters])
 
   return (
     <div className="mushaf-container">
@@ -109,6 +118,13 @@ export function QuranReader() {
               </div>
             ) : (
               <div className="mushaf-card fade-in">
+                {currentPageSurah && (
+                  <div className="mushaf-card__header">
+                    <span className="mushaf-card__surah-en">{currentPageSurah.nameSimple}</span>
+                    <span className="mushaf-card__surah-ar" lang="ar">{currentPageSurah.nameArabic}</span>
+                  </div>
+                )}
+                
                 <div className="mushaf-text" dir="rtl">
                   {verses.map((v) => (
                     <span key={v.verseKey} className="mushaf-verse">
