@@ -15,22 +15,24 @@ export function Nav() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [mobMenuOpen, setMobMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    if (!menuOpen) return
     const handler = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      // User dropdown
+      if (menuOpen && menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setMenuOpen(false)
       }
-    }
+    };
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
   }, [menuOpen])
 
   const handleLogout = () => {
     setMenuOpen(false)
+    setMobMenuOpen(false)
     logout()
     navigate('/login', { replace: true })
   }
@@ -40,17 +42,27 @@ export function Nav() {
 
   return (
     <header className="nav">
-      <NavLink to="/dashboard" className="nav__brand">
-        <span className="nav__mark" aria-hidden />
-        <span className="nav__title">Quran Companion AI</span>
-      </NavLink>
+      <div className="nav__left">
+        <button 
+          className="nav__toggle" 
+          aria-label="Toggle menu"
+          onClick={() => setMobMenuOpen(!mobMenuOpen)}
+        >
+          <div className={`nav__toggle-icon ${mobMenuOpen ? 'nav__toggle-icon--open' : ''}`} />
+        </button>
+        <NavLink to="/dashboard" className="nav__brand" onClick={() => setMobMenuOpen(false)}>
+          <span className="nav__mark" aria-hidden />
+          <span className="nav__title">Quran Companion AI</span>
+        </NavLink>
+      </div>
 
-      <nav className="nav__links" aria-label="Primary">
+      <nav className={`nav__links ${mobMenuOpen ? 'nav__links--open' : ''}`} aria-label="Primary">
         {NAV_LINKS.map(({ to, label }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) => `nav__link${isActive ? ' nav__link--active' : ''}`}
+            onClick={() => setMobMenuOpen(false)}
           >
             {label}
           </NavLink>

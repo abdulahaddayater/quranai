@@ -117,20 +117,121 @@ a {
   font-size: 0.95rem;
 }
 
+.nav__left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: none;
+  background: var(--bg-elevated);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+@media (min-width: 860px) {
+  .nav__toggle {
+    display: none;
+  }
+}
+
+.nav__toggle-icon {
+  width: 18px;
+  height: 2px;
+  background: var(--muted);
+  position: relative;
+  transition: background var(--transition);
+}
+
+.nav__toggle-icon::before,
+.nav__toggle-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: inherit;
+  transition: transform var(--transition), top var(--transition);
+}
+
+.nav__toggle-icon::before {
+  top: -6px;
+}
+
+.nav__toggle-icon::after {
+  top: 6px;
+}
+
+.nav__toggle-icon--open {
+  background: transparent;
+}
+
+.nav__toggle-icon--open::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.nav__toggle-icon--open::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
 .nav__links {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.75rem;
-  justify-content: flex-end;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  width: 100%;
+  height: calc(100svh - 64px);
+  background: var(--bg-elevated);
+  flex-direction: column;
+  padding: 2rem 1.75rem;
+  gap: 1.5rem;
+  justify-content: flex-start;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
+}
+
+.nav__links--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+@media (min-width: 860px) {
+  .nav__links {
+    position: static;
+    flex-direction: row;
+    height: auto;
+    width: auto;
+    background: transparent;
+    padding: 0;
+    gap: 0.35rem 0.75rem;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    z-index: 1;
+  }
 }
 
 .nav__link {
   text-decoration: none;
-  font-size: 0.88rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: var(--muted);
-  padding: 0.35rem 0.65rem;
-  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
   transition: color var(--transition), background var(--transition);
 }
 
@@ -142,6 +243,14 @@ a {
 .nav__link--active {
   color: var(--green);
   background: var(--green-soft);
+}
+
+@media (min-width: 860px) {
+  .nav__link {
+    font-size: 0.88rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+  }
 }
 
 /* Landing */
@@ -732,9 +841,21 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
-  margin: 0.65rem 0 1rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
+@media (max-width: 500px) {
+  .surah-rec {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .surah-rec__arabic {
+    align-self: flex-end;
+    margin-top: -0.5rem;
+  }
 }
 
 .surah-rec__left {
@@ -2511,3 +2632,85 @@ a {
   }
 }
 
+/* ── Mobile Responsiveness Overrides ── */
+
+@media (max-width: 640px) {
+  .main--padded {
+    padding: 0 1rem 3rem;
+  }
+
+  .page__title {
+    font-size: 1.75rem;
+  }
+
+  .dash-greeting {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .row-actions {
+    flex-direction: column;
+  }
+
+  .row-actions .btn {
+    width: 100%;
+  }
+
+  .reading-header__title {
+    font-size: 1.8rem;
+  }
+
+  .reading-pagination {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .reading-pagination__info {
+    order: -1;
+    margin-bottom: 0.25rem;
+  }
+
+  .reading-pagination .btn {
+    width: 100%;
+  }
+
+  .verse-card__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .verse-card__actions .verse-btn:last-child {
+    grid-column: span 2;
+  }
+
+  .ch-detail-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ch-detail-nav .btn {
+    width: 100%;
+  }
+
+  .arabic-block {
+    font-size: 1.25rem;
+    padding: 0.85rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing__headline {
+    font-size: 2rem;
+  }
+  
+  .stat-big {
+    font-size: 2.25rem;
+  }
+}
