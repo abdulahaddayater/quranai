@@ -2733,69 +2733,246 @@ a {
   }
 }
 
-/* ── Quran Reader Navigation ──────────────────────────────────── */
-.quran-nav {
-  margin-bottom: 1.5rem;
-  padding: 1rem 1.25rem;
-  background: var(--bg-elevated);
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-sm);
+/* ── Mushaf Reader Mode ────────────────────────────────────────── */
+.mushaf-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #fdfdfb; /* Subtle parchment feel */
+  overflow: hidden;
 }
 
-.quran-nav__controls {
+.mushaf-viewport {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* UI Overlay */
+.mushaf-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+  background: rgba(253, 253, 251, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(47, 93, 80, 0.1);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mushaf-ui--loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.mushaf-ui__inner {
+  max-width: 600px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
 }
 
-.quran-nav__jump {
+.mushaf-ui__btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--green);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background: var(--bg);
-  padding: 0.25rem 0.5rem;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.mushaf-ui__btn:hover:not(:disabled) {
+  background: var(--green-soft);
+}
+
+.mushaf-ui__btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.mushaf-ui__jump {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: white;
+  padding: 0.35rem 0.75rem;
   border-radius: 999px;
   border: 1px solid var(--line);
 }
 
-.quran-nav__input {
-  width: 4rem;
+.mushaf-ui__input {
+  width: 3rem;
   border: none;
   background: transparent;
   text-align: center;
-  font: inherit;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--green);
   outline: none;
 }
 
-.quran-nav__total {
-  font-size: 0.82rem;
+.mushaf-ui__total {
+  font-size: 0.85rem;
   color: var(--muted);
   font-weight: 500;
-  margin-right: 0.25rem;
 }
 
-.quran-foot {
-  margin-top: 2rem;
-  padding-bottom: 4rem;
+/* Main Content Area */
+.mushaf-page-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4.5rem 1rem 3rem; /* Padding for header/footer */
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+.mushaf-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  min-height: calc(100vh - 7.5rem);
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+}
+
+/* The actual Quranic text */
+.mushaf-text {
+  font-family: var(--font-ar);
+  font-size: 2.25rem;
+  line-height: 2.4;
+  text-align: center;
+  word-spacing: 0.1rem;
+  color: #1a1a1a;
+  margin-bottom: 3rem;
+}
+
+.mushaf-verse {
+  display: inline;
+  margin: 0 0.15rem;
+  white-space: normal;
+}
+
+.mushaf-ayah-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin: 0 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  vertical-align: middle;
+  transform: translateY(-2px);
+  user-select: none;
+}
+
+/* Translations Section */
+.mushaf-translations {
+  margin-top: auto;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.mushaf-translation-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.mushaf-tr-item {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.mushaf-tr-num {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--green);
+  flex-shrink: 0;
+  width: 1.5rem;
+}
+
+.mushaf-tr-text {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Skeleton Loading */
+.mushaf-skel {
+  max-width: 600px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mushaf-skel__line {
+  height: 2.5rem;
+  background: #eee;
+  border-radius: 4px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* Progress indicator */
+.mushaf-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(47, 93, 80, 0.05);
+}
+
+.mushaf-progress__bar {
+  height: 100%;
+  background: var(--green);
+  transition: width 0.3s ease;
 }
 
 @media (max-width: 640px) {
-  .quran-nav__controls {
-    flex-direction: column;
+  .mushaf-card {
+    padding: 1.5rem 1rem;
+    box-shadow: none;
+    background: transparent;
   }
   
-  .quran-nav__jump {
-    width: 100%;
-    justify-content: center;
-    order: -1;
+  .mushaf-text {
+    font-size: 1.75rem;
+    line-height: 2.2;
   }
   
-  .quran-nav .btn {
-    width: 100%;
+  .mushaf-ayah-num {
+    width: 1.4rem;
+    height: 1.4rem;
+    font-size: 0.65rem;
   }
 }

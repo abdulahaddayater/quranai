@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { getVersesByPage, type Verse } from '../lib/versesApi'
 import { loadLastPage, saveLastPage } from '../lib/chaptersStore'
 import { recordActivity } from '../lib/habits'
-import { VerseCard } from '../components/VerseCard'
 
 export function QuranReader() {
   const [page, setPage] = useState(() => loadLastPage())
@@ -42,99 +41,105 @@ export function QuranReader() {
   }
 
   return (
-    <div className="page fade-in">
-      <div className="page__header">
-        <h1 className="page__title">Read Quran</h1>
-        <p className="page__subtitle">
-          Read the entire Quran page by page. Your progress is saved automatically.
-        </p>
-      </div>
-
-      {/* ── Page Navigation ── */}
-      <div className="quran-nav">
-        <div className="quran-nav__controls">
-          <button
-            type="button"
-            className="btn btn--ghost btn--small"
-            disabled={page <= 1}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-          >
-            ← Prev Page
-          </button>
-          
-          <form className="quran-nav__jump" onSubmit={handleJump}>
-            <input
-              type="number"
-              name="page"
-              min={1}
-              max={604}
-              defaultValue={page}
-              key={page} // reset input on page change
-              className="quran-nav__input"
-              aria-label="Go to page"
-            />
-            <span className="quran-nav__total">of 604</span>
-            <button type="submit" className="btn btn--primary btn--small">Go</button>
-          </form>
-
-          <button
-            type="button"
-            className="btn btn--ghost btn--small"
-            disabled={page >= 604}
-            onClick={() => setPage((p) => Math.min(604, p + 1))}
-          >
-            Next Page →
-          </button>
-        </div>
-      </div>
-
+    <div className="mushaf-container">
       {error ? (
-        <div className="error-banner">{error}</div>
-      ) : loading ? (
-        <div className="verse-skel-list">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="verse-skel">
-              <div className="skel skel--line" style={{ width: '100%', height: '3rem' }} />
-              <div className="skel skel--line" style={{ width: '80%' }} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <ol className="verse-list" aria-label={`Verses on page ${page}`}>
-          {verses.map((verse) => (
-            <VerseCard
-              key={verse.verseKey}
-              verse={verse}
-              simple
-            />
-          ))}
-        </ol>
-      )}
-
-      {/* ── Footer Nav ── */}
-      {!loading && !error && (
-        <div className="quran-foot">
-          <div className="reading-pagination">
+        <div className="page fade-in">
+          <div className="error-banner">{error}</div>
+          <div className="qca-center" style={{ marginTop: '2rem' }}>
             <button
               type="button"
-              className="btn btn--ghost"
-              disabled={page <= 1}
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="btn btn--primary"
+              onClick={() => setPage((p) => (p > 1 ? p : 1))}
             >
-              ← Previous Page
-            </button>
-            <span className="reading-pagination__info">
-              Page {page} of 604
-            </span>
-            <button
-              type="button"
-              className="btn btn--ghost"
-              disabled={page >= 604}
-              onClick={() => setPage((p) => Math.min(604, p + 1))}
-            >
-              Next Page →
+              Retry
             </button>
           </div>
+        </div>
+      ) : (
+        <div className="mushaf-viewport">
+          {/* ── Page Navigation Header ── */}
+          <header className={`mushaf-ui ${loading ? 'mushaf-ui--loading' : ''}`}>
+            <div className="mushaf-ui__inner">
+              <button
+                type="button"
+                className="mushaf-ui__btn"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                aria-label="Previous Page"
+              >
+                ←
+              </button>
+
+              <div className="mushaf-ui__meta">
+                <form className="mushaf-ui__jump" onSubmit={handleJump}>
+                  <input
+                    type="number"
+                    name="page"
+                    min={1}
+                    max={604}
+                    defaultValue={page}
+                    key={page}
+                    className="mushaf-ui__input"
+                  />
+                  <span className="mushaf-ui__total">/ 604</span>
+                </form>
+              </div>
+
+              <button
+                type="button"
+                className="mushaf-ui__btn"
+                disabled={page >= 604}
+                onClick={() => setPage((p) => Math.min(604, p + 1))}
+                aria-label="Next Page"
+              >
+                →
+              </button>
+            </div>
+          </header>
+
+          {/* ── The Mushaf Page Content ── */}
+          <main className="mushaf-page-wrap">
+            {loading ? (
+              <div className="mushaf-skel">
+                <div className="mushaf-skel__line" style={{ width: '90%' }} />
+                <div className="mushaf-skel__line" style={{ width: '85%' }} />
+                <div className="mushaf-skel__line" style={{ width: '95%' }} />
+                <div className="mushaf-skel__line" style={{ width: '80%' }} />
+                <div className="mushaf-skel__line" style={{ width: '90%' }} />
+              </div>
+            ) : (
+              <div className="mushaf-card fade-in">
+                <div className="mushaf-text" dir="rtl">
+                  {verses.map((v) => (
+                    <span key={v.verseKey} className="mushaf-verse">
+                      {v.arabic}
+                      <span className="mushaf-ayah-num">{v.verseNumber}</span>
+                    </span>
+                  ))}
+                </div>
+                
+                <div className="mushaf-translations">
+                  <p className="mushaf-translation-title">Translation Summary</p>
+                  {verses.map((v) => (
+                    <div key={`tr-${v.verseKey}`} className="mushaf-tr-item">
+                      <span className="mushaf-tr-num">{v.verseNumber}.</span>
+                      <span className="mushaf-tr-text">{v.translation}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </main>
+
+          {/* ── Floating Progress Indicator ── */}
+          {!loading && (
+            <div className="mushaf-progress">
+              <div 
+                className="mushaf-progress__bar" 
+                style={{ width: `${(page / 604) * 100}%` }} 
+              />
+            </div>
+          )}
         </div>
       )}
     </div>
