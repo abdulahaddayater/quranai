@@ -117,16 +117,6 @@ export function QuranReader() {
                     </span>
                   ))}
                 </div>
-                
-                <div className="mushaf-translations">
-                  <p className="mushaf-translation-title">Translation Summary</p>
-                  {verses.map((v) => (
-                    <div key={`tr-${v.verseKey}`} className="mushaf-tr-item">
-                      <span className="mushaf-tr-num">{v.verseNumber}.</span>
-                      <span className="mushaf-tr-text">{v.translation}</span>
-                    </div>
-                  ))}
-                </div>
               </div>
             )}
           </main>
