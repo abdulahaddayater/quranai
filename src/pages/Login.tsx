@@ -40,7 +40,7 @@ export function Login() {
         {/* Brand */}
         <div className="login-brand">
           <span className="login-brand__dot" style={{ background: color }} aria-hidden />
-          <span className="login-brand__name">Quran Companion AI</span>
+          <span className="login-brand__name">Hidayah AI</span>
         </div>
 
         {/* Arabic greeting */}

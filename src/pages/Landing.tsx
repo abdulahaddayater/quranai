@@ -6,7 +6,7 @@ export function Landing() {
       <div className="landing__glow" aria-hidden />
       <div className="landing__inner">
         <p className="eyebrow">Daily connection, gentle guidance</p>
-        <h1 className="landing__headline">Quran Companion AI</h1>
+        <h1 className="landing__headline">Hidayah AI</h1>
         <p className="landing__lede">
           Stay close to the Qur’an with mood-based verses, practical meaning, reflections you can
           revisit, and a simple habit rhythm that celebrates showing up.

@@ -53,7 +53,7 @@ export function Nav() {
         </button>
         <NavLink to="/dashboard" className="nav__brand" onClick={() => setMobMenuOpen(false)}>
           <span className="nav__mark" aria-hidden />
-          <span className="nav__title">Quran Companion AI</span>
+          <span className="nav__title">Hidayah AI</span>
         </NavLink>
       </div>
 
