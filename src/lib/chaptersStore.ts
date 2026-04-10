@@ -77,3 +77,17 @@ export function loadLanguage(): SupportedLanguage {
 export function saveLanguage(lang: SupportedLanguage): void {
   localStorage.setItem(LANG_KEY, lang)
 }
+
+// ── Last Read Page ────────────────────────────────────────────────────────
+
+const LAST_PAGE_KEY = 'qca_last_page_v1'
+
+export function loadLastPage(): number {
+  const raw = localStorage.getItem(LAST_PAGE_KEY)
+  const num = raw ? Number(raw) : 1
+  return isNaN(num) || num < 1 ? 1 : Math.min(604, num)
+}
+
+export function saveLastPage(page: number): void {
+  localStorage.setItem(LAST_PAGE_KEY, String(page))
+}

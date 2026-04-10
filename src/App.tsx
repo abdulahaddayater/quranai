@@ -14,6 +14,7 @@ import { SurahReading } from './pages/SurahReading'
 import { VerseDetail } from './pages/VerseDetail'
 import { Profile } from './pages/Profile'
 import { Collections } from './pages/Collections'
+import { QuranReader } from './pages/QuranReader'
 
 /** Wraps a page in both an AuthGuard and its own ErrorBoundary. */
 function Protected({ children, scope }: { children: React.ReactNode; scope: string }) {
@@ -74,6 +75,10 @@ export default function App() {
               <Route
                 path="/collections"
                 element={<Protected scope="Collections"><Collections /></Protected>}
+              />
+              <Route
+                path="/quran"
+                element={<Protected scope="Quran Reader"><QuranReader /></Protected>}
               />
               <Route
                 path="/profile"

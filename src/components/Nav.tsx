@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { getInitials } from '../lib/auth'
 
 const NAV_LINKS = [
+  { to: '/quran', label: 'Read' },
   { to: '/dashboard', label: 'Dashboard' },
   { to: '/chapters', label: 'Chapters' },
   { to: '/guidance', label: 'Guidance' },

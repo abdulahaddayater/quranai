@@ -172,6 +172,18 @@ export async function getRandomVerse(): Promise<Verse> {
   return mapVerse(data.verse)
 }
 
+/**
+ * Fetch all verses for a specific page of the Mushaf.
+ * Quran has 604 pages.
+ */
+export async function getVersesByPage(pageNumber: number | string): Promise<Verse[]> {
+  const data = await get<{ verses: RawVerse[] }>(
+    `/verses/by_page/${pageNumber}`,
+    { ...BASE_PARAMS }
+  )
+  return (data.verses ?? []).map(mapVerse)
+}
+
 // ── Daily Ayah cache ───────────────────────────────────────────────────────
 
 interface CachedDailyVerse {

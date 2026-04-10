@@ -2732,3 +2732,70 @@ a {
     font-size: 2.25rem;
   }
 }
+
+/* ── Quran Reader Navigation ──────────────────────────────────── */
+.quran-nav {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-elevated);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+
+.quran-nav__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.quran-nav__jump {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+
+.quran-nav__input {
+  width: 4rem;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font: inherit;
+  font-weight: 700;
+  color: var(--green);
+  outline: none;
+}
+
+.quran-nav__total {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-right: 0.25rem;
+}
+
+.quran-foot {
+  margin-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+@media (max-width: 640px) {
+  .quran-nav__controls {
+    flex-direction: column;
+  }
+  
+  .quran-nav__jump {
+    width: 100%;
+    justify-content: center;
+    order: -1;
+  }
+  
+  .quran-nav .btn {
+    width: 100%;
+  }
+}
