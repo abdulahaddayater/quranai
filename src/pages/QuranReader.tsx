@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getVersesByPage, type Verse } from '../lib/versesApi'
 import { loadLastPage, saveLastPage } from '../lib/chaptersStore'
-import { addReflection } from '../lib/reflections'
 import { recordActivity } from '../lib/habits'
 import { VerseCard } from '../components/VerseCard'
 
@@ -11,13 +10,6 @@ export function QuranReader() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // UI State for VerseCard
-  const [activeAudioKey, setActiveAudioKey] = useState<string | null>(null)
-  const [reflectKey, setReflectKey] = useState<string | null>(null)
-  const [reflectText, setReflectText] = useState('')
-  const [reflectSaved, setReflectSaved] = useState<string | null>(null)
-  const reflectRef = useRef<HTMLTextAreaElement>(null)
-
   useEffect(() => {
     recordActivity()
   }, [])
@@ -25,8 +17,6 @@ export function QuranReader() {
   useEffect(() => {
     setLoading(true)
     setError(null)
-    setActiveAudioKey(null)
-    setReflectKey(null)
     
     // Auto-scroll to top when page changes
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -41,35 +31,6 @@ export function QuranReader() {
       })
       .finally(() => setLoading(false))
   }, [page])
-
-  const toggleAudio = (key: string) => {
-    setActiveAudioKey((prev) => (prev === key ? null : key))
-  }
-
-  const openReflect = (key: string) => {
-    setReflectKey((prev) => {
-      if (prev === key) return null
-      setReflectText('')
-      setReflectSaved(null)
-      return key
-    })
-    setTimeout(() => reflectRef.current?.focus(), 80)
-  }
-
-  const saveReflection = useCallback(
-    (verse: Verse) => {
-      const trimmed = reflectText.trim()
-      if (!trimmed) return
-      addReflection({ text: trimmed, verseRef: verse.verseKey })
-      setReflectText('')
-      setReflectSaved(verse.verseKey)
-      setTimeout(() => {
-        setReflectSaved(null)
-        setReflectKey(null)
-      }, 1800)
-    },
-    [reflectText],
-  )
 
   const handleJump = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -144,15 +105,7 @@ export function QuranReader() {
             <VerseCard
               key={verse.verseKey}
               verse={verse}
-              isAudioOpen={activeAudioKey === verse.verseKey}
-              isReflecting={reflectKey === verse.verseKey}
-              reflectText={reflectText}
-              reflectSaved={reflectSaved === verse.verseKey}
-              reflectRef={reflectKey === verse.verseKey ? reflectRef : undefined}
-              onToggleAudio={() => toggleAudio(verse.verseKey)}
-              onOpenReflect={() => openReflect(verse.verseKey)}
-              onReflectTextChange={setReflectText}
-              onSaveReflection={() => saveReflection(verse)}
+              simple
             />
           ))}
         </ol>

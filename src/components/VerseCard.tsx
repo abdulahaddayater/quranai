@@ -4,23 +4,25 @@ import { loadReflections } from '../lib/reflections'
 
 interface VerseCardProps {
   verse: Verse
-  isAudioOpen: boolean
-  isReflecting: boolean
-  reflectText: string
-  reflectSaved: boolean
+  simple?: boolean
+  isAudioOpen?: boolean
+  isReflecting?: boolean
+  reflectText?: string
+  reflectSaved?: boolean
   reflectRef?: React.RefObject<HTMLTextAreaElement | null>
-  onToggleAudio: () => void
-  onOpenReflect: () => void
-  onReflectTextChange: (v: string) => void
-  onSaveReflection: () => void
+  onToggleAudio?: () => void
+  onOpenReflect?: () => void
+  onReflectTextChange?: (v: string) => void
+  onSaveReflection?: () => void
 }
 
 export function VerseCard({
   verse,
-  isAudioOpen,
-  isReflecting,
-  reflectText,
-  reflectSaved,
+  simple = false,
+  isAudioOpen = false,
+  isReflecting = false,
+  reflectText = '',
+  reflectSaved = false,
   reflectRef,
   onToggleAudio,
   onOpenReflect,
@@ -46,34 +48,36 @@ export function VerseCard({
         {verse.translation || <em className="verse-card__missing">Translation unavailable</em>}
       </p>
 
-      <div className="verse-card__actions">
-        <button
-          type="button"
-          className={`verse-btn${isAudioOpen ? ' verse-btn--active' : ''}`}
-          onClick={onToggleAudio}
-          aria-expanded={isAudioOpen}
-          aria-label={isAudioOpen ? 'Hide audio' : 'Play recitation'}
-        >
-          {isAudioOpen ? '⏸ Audio' : '▶ Play'}
-        </button>
-        <button
-          type="button"
-          className={`verse-btn${isReflecting ? ' verse-btn--active' : ''}`}
-          onClick={onOpenReflect}
-          aria-expanded={isReflecting}
-        >
-          ✍ Reflect{existingCount > 0 ? ` (${existingCount})` : ''}
-        </button>
-        <Link
-          to={`/verse/${verse.verseKey}`}
-          className="verse-btn"
-          aria-label="Open verse detail"
-        >
-          Tafsir →
-        </Link>
-      </div>
+      {!simple && (
+        <div className="verse-card__actions">
+          <button
+            type="button"
+            className={`verse-btn${isAudioOpen ? ' verse-btn--active' : ''}`}
+            onClick={onToggleAudio}
+            aria-expanded={isAudioOpen}
+            aria-label={isAudioOpen ? 'Hide audio' : 'Play recitation'}
+          >
+            {isAudioOpen ? '⏸ Audio' : '▶ Play'}
+          </button>
+          <button
+            type="button"
+            className={`verse-btn${isReflecting ? ' verse-btn--active' : ''}`}
+            onClick={onOpenReflect}
+            aria-expanded={isReflecting}
+          >
+            ✍ Reflect{existingCount > 0 ? ` (${existingCount})` : ''}
+          </button>
+          <Link
+            to={`/verse/${verse.verseKey}`}
+            className="verse-btn"
+            aria-label="Open verse detail"
+          >
+            Tafsir →
+          </Link>
+        </div>
+      )}
 
-      {isAudioOpen && (
+      {!simple && isAudioOpen && (
         <div className="verse-card__audio fade-in">
           <audio
             controls
@@ -88,7 +92,7 @@ export function VerseCard({
         </div>
       )}
 
-      {isReflecting && (
+      {!simple && isReflecting && (
         <div className="verse-card__reflect fade-in">
           {reflectSaved ? (
             <p className="verse-reflect__saved">✓ Reflection saved</p>
@@ -100,7 +104,7 @@ export function VerseCard({
                 rows={3}
                 placeholder={`What does ${verse.verseKey} mean to you today?`}
                 value={reflectText}
-                onChange={(e) => onReflectTextChange(e.target.value)}
+                onChange={(e) => onReflectTextChange?.(e.target.value)}
                 maxLength={1000}
               />
               <div className="verse-reflect__row">
