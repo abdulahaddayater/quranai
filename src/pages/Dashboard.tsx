@@ -17,10 +17,7 @@ import {
 } from '../lib/versesApi'
 
 function timeGreeting(): string {
-  const h = new Date().getHours()
-  if (h < 12) return 'Good morning'
-  if (h < 17) return 'Good afternoon'
-  return 'Good evening'
+  return 'Assalamu Alaikum'
 }
 
 export function Dashboard() {
