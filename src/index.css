@@ -1072,71 +1072,89 @@ a {
 .ch-card__inner {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0.85rem;
-  padding-right: 2.4rem;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  padding-right: 2.75rem;
   text-decoration: none;
   color: inherit;
 }
 
-.ch-card__num {
+.ch-card__num-wrap {
   flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 0.78rem;
-  font-weight: 700;
+  min-width: 2.8rem;
+  padding: 0.4rem;
   background: var(--green-soft);
+  border-radius: var(--radius-sm);
   color: var(--green);
+}
+
+.ch-card__num {
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.ch-card__count {
+  font-size: 0.68rem;
+  font-weight: 500;
+  opacity: 0.75;
+  margin-top: -0.1rem;
 }
 
 .ch-card__body {
   flex: 1;
   min-width: 0;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.ch-card__names {
+  display: flex;
   flex-direction: column;
   gap: 0.1rem;
+  min-width: 0;
+}
+
+.ch-card__name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ch-card__en {
+  font-size: 0.82rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ch-card__arabic {
   font-family: var(--font-ar);
-  font-size: 1.1rem;
-  color: var(--text);
-  line-height: 1.3;
-}
-
-.ch-card__name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.ch-card__en {
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
-.ch-card__meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.25rem;
+  font-size: 1.5rem;
+  color: var(--green);
+  line-height: 1;
   flex-shrink: 0;
+  text-align: right;
 }
 
-.ch-card__verses {
-  font-size: 0.72rem;
-  color: var(--fine);
-}
-
-.ch-card__dot {
+.ch-card__visited-indicator {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--green);
+  background: var(--gold);
 }
 
 .ch-card__bm {

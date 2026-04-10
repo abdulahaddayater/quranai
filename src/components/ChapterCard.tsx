@@ -9,25 +9,24 @@ type Props = {
 }
 
 export function ChapterCard({ chapter, bookmarked = false, visited = false, onToggleBookmark }: Props) {
-  const place = chapter.revelationPlace === 'makkah' ? 'Meccan' : 'Medinan'
-  const placeClass = chapter.revelationPlace === 'makkah' ? 'tag--makkah' : 'tag--madani'
 
   return (
     <div className={`ch-card${visited ? ' ch-card--visited' : ''}`}>
       <Link to={`/chapters/${chapter.id}`} className="ch-card__inner">
-        <span className="ch-card__num">{chapter.id}</span>
+        <div className="ch-card__num-wrap">
+          <span className="ch-card__num">{chapter.id}</span>
+          <span className="ch-card__count">{chapter.versesCount}</span>
+        </div>
         <div className="ch-card__body">
+          <div className="ch-card__names">
+            <span className="ch-card__name">{chapter.nameSimple}</span>
+            <span className="ch-card__en">{chapter.translatedName?.name ?? '—'}</span>
+          </div>
           <span className="ch-card__arabic" lang="ar">
             {chapter.nameArabic}
           </span>
-          <span className="ch-card__name">{chapter.nameSimple}</span>
-          <span className="ch-card__en">{chapter.translatedName?.name ?? '—'}</span>
         </div>
-        <div className="ch-card__meta">
-          <span className={`tag ${placeClass}`}>{place}</span>
-          <span className="ch-card__verses">{chapter.versesCount} v.</span>
-          {visited ? <span className="ch-card__dot" aria-label="Visited" /> : null}
-        </div>
+        {visited ? <div className="ch-card__visited-indicator" aria-label="Visited" /> : null}
       </Link>
       {onToggleBookmark ? (
         <button
