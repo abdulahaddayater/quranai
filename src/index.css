@@ -2962,3 +2962,106 @@ a {
     font-size: 1.25rem;
   }
 }
+
+/* -- Dashboard Minimalist Redesign ------------------------------ */
+.dash-minimal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.mini-stat {
+  background: var(--bg-elevated);
+  padding: 1rem 0.5rem;
+  border-radius: var(--radius);
+  text-align: center;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease;
+}
+
+.mini-stat:hover {
+  transform: translateY(-2px);
+  border-color: var(--green-soft);
+}
+
+.mini-stat__val {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--green);
+  line-height: 1;
+}
+
+.mini-stat__label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.4rem;
+}
+
+.mini-surah {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  padding: 0.5rem 0;
+}
+
+.mini-surah__num {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--green);
+  background: var(--green-soft);
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mini-surah__name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.dash-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 2rem 0;
+}
+
+.dash-progress-subtle {
+  padding: 1.5rem 1rem;
+  background: var(--bg-soft);
+  border-radius: var(--radius);
+  border: 1px dashed var(--line);
+}
+
+.dash-progress-subtle__text {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.meter--subtle {
+  height: 6px;
+  background: var(--line);
+}
+
+@media (max-width: 640px) {
+  .dash-minimal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
